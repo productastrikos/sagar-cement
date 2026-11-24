@@ -1,7 +1,7 @@
 {
-  "name": "cempulse",
+  "name": "clinkeriq",
   "version": "1.0.0",
-  "description": "CemPulse — Smart Cement Manufacturing Facility dashboard (React client + Express API)",
+  "description": "S!aP ClinkerIQ — lab-to-plant quality and energy intelligence POC for Sagar Cements (React client + Express API, in-memory)",
   "private": true,
   "engines": {
     "node": ">=18"
@@ -11,7 +11,8 @@
     "build": "npm install --prefix client && npm run build --prefix client",
     "install:all": "npm install --prefix server && npm install --prefix client",
     "postinstall": "npm run install:all && npm run build",
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "selftest": "npm run selftest --prefix server"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

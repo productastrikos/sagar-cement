@@ -5,4 +5,3 @@ server/node_modules/
 server/.env
 client/.env
 client/.env.production
-server/data/cempulse.sqlite*

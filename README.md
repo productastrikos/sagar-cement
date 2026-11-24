@@ -1,144 +1,69 @@
-# CemPulse — Smart Cement Manufacturing Dashboard
+# S!aP ClinkerIQ — lab-to-plant intelligence for Sagar Cements
 
-A full-stack Industry 4.0 dashboard for cement plants, built around the use cases in the
-"Smart Cement Manufacturing Facility" reference document: bag filter dust monitoring, smart
-control centre management, 3D stock management, predictive maintenance, kiln & energy
-optimization, quality prediction, worker safety, and emissions & carbon tracking.
+A proof of concept built strictly on the 6 November 2026 Astrikos × Sagar Cements discovery meeting
+(`docs/Astrikos_Sagar_Cements_Meeting_Summary.docx`) and the two research briefs in `docs/`.
+It replaces the earlier CemPulse demo (still on the `no-db` branch). Live at https://sagar-cement.astrikos.xyz:8443.
 
-Only **Bag Filter Dust Monitoring** the document's recommended rollout entry point is
-fully interactive today, with live simulated sensor data, an emission trend chart against
-the regulatory limit, and predictive alerts. 
+The name: "CemSync" was rejected in research (Envirosoft already ships a CEMS module called CEMSync); ClinkerIQ came back clean.
 
-The other 7 modules are scaffolded in the
-navigation as content rich preview pages (What it is / Advantages / Disadvantages / Bottom
-line), ready to be built out the same way in a later phase.
+## What the meeting asked for → where it is
 
----
-
-## Tech stack
-
-| Layer | Technology |
+| Meeting point | Screen |
 |---|---|
-| Frontend | React 18 (Create React App), React Router v6, Tailwind CSS 3, Chart.js 4 |
-| Backend | Node.js, Express |
-| Auth | JWT + bcryptjs, in-memory demo users |
-| Data | In-memory simulation engine, polled by the client every ~10-12s |
+| Stabilise data receipt and handling (immediate focus) | **Connectivity & data health** — edge store-and-forward, dead-letter queue, live "broken-pipe" test |
+| Connect XRF, XRD, particle size, cross-belt, calorimeter, microscope, strength testers | **Lab integration** |
+| Connect field instruments, sensors and cameras | **Field & vision** |
+| Bring raw material, process, operational and field data together | **Material genealogy** |
+| Correlate clinker parameters with cement quality | **Quality workbench** (residence-time aligned vs naive join) |
+| Predict process behaviour, optimise against product specs | **Predict & optimise** (soft sensor, 28-day forecaster, BIS IS 269/1489/455, what-if) |
+| Energy management, power automation, renewables | **Energy scorecard · Power automation · ToD & dispatch · Process efficiency** |
+| Corporate demo (architecture, connectivity, analytics) | **Fleet overview · AI advisory · Platform & architecture** |
 
----
+Data: Sagar's real six plants (capacities, kilns, CPP/WHRS/solar/hydro), FY 2026–27 TGERC/APERC/MPERC/OERC ToD tariffs,
+BIS limits and the research's seven anomaly scenarios. Contract demand per plant and the Dachepalli kiln split are demo assumptions (flagged in `server/domain/plants.js`).
+Everything is simulated — no plant connection.
 
-## Project structure
+## Stack (deliberately simple)
+
+| Layer | Tech |
+|---|---|
+| Client | React 18 (CRA), React Router 6, Recharts, Leaflet, lucide-react, self-hosted Lexend Deca + Lato, jsPDF / html2canvas / SheetJS for the Document Studio |
+| Server | Node.js + Express, JWT, in-memory simulation ticking every 5 s — **no database** |
+| Theme | `client/src/styles/theme.css` generated verbatim from *Astrikos UI Theme v2.0*; product patterns in `additions.css` |
+
+## Run locally
+
+```bash
+npm run install:all
+npm run dev            # API :4000 + client :3000
+npm run selftest       # 767 checks: card == drawer hero, forecast contract, determinism, scenario evidence, MD rules
+```
+
+Open http://localhost:3000. Demo accounts (password `Astrikos2026`): `admin`, `quality`, `process`, `energy`.
+
+## S!a Copilot
+
+`@astrikos/sia-copilot` is vendored as `client/vendor/astrikos-sia-copilot-1.0.0-ciq.1.tgz` (two small patches: async custom handlers, and rule-brain misses routed to an `llm` handler). Content lives in `client/src/copilot/` (tours = the guided demo, knowledge = pages, KPIs, glossary). Questions the rules cannot answer go to `POST /api/sia/ask`, which answers from a live ClinkerIQ snapshot using the key in `server/.env`. Open it with **Ctrl+Shift+A**, the sidebar button, or profile menu → **Guided demo by S!a**. Voice input needs Chrome or Edge.
+
+## Presenting
+
+- Profile menu → **Demo director** (or `?director=1`) fires scenarios S1–S7, the WAN outage, a malformed XRF row and the peak-hour MD ramp.
+- Two live moments: **Connectivity → "Cut the WAN for 60 s"** and **Power automation → "Ramp the mills inside the peak window"**.
+- Every KPI card opens its detail drawer (trend, forecast with 95% band, breakdown, AI advisory with Apply); every Download goes through the Document Studio (PDF / Excel / CSV / PNG).
+- The boot state already carries two stories: XRF drift at Mattampally Kiln 2 and a wet, low-glass slag rake at Jajpur.
+
+## Layout
 
 ```
 server/
-  data/            # in-memory users, bag filter state, alerts store
-  services/        # simulation loop (random-walks sensor readings, raises alerts)
-  middleware/       # JWT auth middleware
-  routes/          # auth, dashboard, bagfilter, health
-  index.js         # Express app entrypoint
-
-client/
-  src/
-    App.js                     # routing + auth gating
-    services/
-      auth.js                  # AuthProvider / useAuth
-      api.js                   # REST calls to the backend
-      socket.js                # polling DataContext (kept filename for compatibility)
-      cementKnowledge.js       # module content, plant zones, RBAC roles, audit log seed
-    components/
-      Layout.js                # sidebar, topbar, alert/advisory panels
-      RequireAuth.js           # route guard
-      KPICard.js, AlertPanel.js, AdvisoryPanel.js, ZoneFilterBar.js, chartUtils.js
-    pages/
-      Login.js
-      Dashboard.js              # plant-wide overview
-      BagFilterMonitoring.js    # fully interactive module
-      ModulePlaceholder.js      # shared page for the 7 preview modules
-      Compliance.js             # compliance & emissions audit
+  domain/   plants, tariffs, BIS specs, instrument & connector catalogue
+  sim/      scenarios, process, lab, connectivity, power, advisory, engine, selftest
+  kpi/      registry (63 KPIs), history, forecast (§8.17), insight (drawer payload §8.16)
+  routes/   core, data, quality, energy, platform
+client/src/
+  lib/        theme, tokens, api, auth, live polling, kpi drawer, studio, toast
+  components/ Shell, KpiDrawer, DocStudio, Advisory, charts, ui, Search, Director
+  pages/      13 pages + Login
 ```
 
----
-
-## Quick start
-
-```bash
-# From the project root
-npm run install:all
-
-# Copy env templates
-cp server/.env.example server/.env
-cp client/.env.example client/.env
-
-# Start both the API (port 4000) and the client (port 3000)
-npm run dev
-```
-
-Then open http://localhost:3000 — you'll be redirected to `/login`.
-
-### Demo credentials
-
-All demo accounts share the password `Astrikos2026`. Log in with the **username** (not email).
-
-| Role | Username | Email (alternate login) |
-|---|---|---|
-| Plant Administrator | admin | admin@cempulse.demo |
-| Control Room Operator | operator | operator@cempulse.demo |
-| Maintenance Engineer | maintenance | maintenance@cempulse.demo |
-| HSE / Safety Officer | hse | hse@cempulse.demo |
-
-The login page has one-click buttons to fill any of these in.
-
----
-
-## API
-
-All `/api/dashboard/*` and `/api/bagfilter/*` routes require a `Authorization: Bearer <token>`
-header obtained from `POST /api/auth/login`.
-
-| Method | Path | Description |
-|---|---|---|
-| POST | `/api/auth/login` | `{ username, password }` (email also accepted) → `{ token, user }` |
-| GET | `/api/auth/me` | current user from the bearer token |
-| GET | `/api/dashboard/summary` | plant-wide KPIs, investment/payback figures, alert counts |
-| GET | `/api/bagfilter/status` | live compartment readings + rolling history |
-| GET | `/api/bagfilter/alerts` | predictive/critical bag filter alerts |
-| POST | `/api/bagfilter/alerts/:id/ack` | acknowledge an alert |
-| GET | `/api/health` | uptime check |
-
----
-
-## Notes
-
-- Readings/alerts/metrics live entirely in memory (`server/db/pg-index.js`) — there is no
-  database to provision or migrate. On boot the server seeds 30 days of demo history
-  (`server/db/seedDemoHistory.js`) so dashboards and KPIs show real values immediately.
-  Each in-memory collection is capped (e.g. last 20,000 rows) so memory usage stays bounded;
-  restarting the server resets state back to a fresh seeded history.
-- The simulation random-walks compartment readings and raises alerts when differential
-  pressure, acoustic index, or emissions cross the thresholds defined in
-  `server/services/simulation.js`.
-- To add a new fully-interactive module, follow the `BagFilterMonitoring.js` pattern: a
-  backend route + simulation source, a client page, and a route in `App.js`.
-
----
-
-## Deploying (single Node app, e.g. Hostinger)
-
-In production the Express server also serves the built React app, so the whole site is one
-Node process — no separate static host needed.
-
-1. **Node.js hosting panel** (e.g. Hostinger hPanel → "Setup Node.js App"):
-   - Application root: repo root (this folder)
-   - Application startup file: `server/index.js`
-   - Node version: any LTS release (18, 20, or 22) — there are no native modules to compile
-2. Set environment variables in the panel: `JWT_SECRET` (required), `JWT_EXPIRES_IN`
-   (optional, defaults to `8h`), `CORS_ORIGIN` (optional). Don't set `PORT` — the host
-   assigns it. No database is needed.
-3. Client build config: `client/.env.production` sets `REACT_APP_API_URL=/api` (a relative
-   path) so the deployed build calls the API on the same origin it's served from — no need
-   to hardcode a domain. Only change this if the API is deployed on a different origin than
-   the static frontend.
-4. Click **Run NPM Install** in the panel. This triggers the root `postinstall` script,
-   which installs both `server/` and `client/` dependencies and runs the client's
-   production build automatically (`npm run build`) — no manual build step needed.
-5. Start/restart the app. It seeds its in-memory demo history on boot, then serves the
-   API under `/api/*` and the React app for every other route from the same domain and port.
+Deployment: see `DEPLOY.md`.

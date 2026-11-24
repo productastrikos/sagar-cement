@@ -71,6 +71,8 @@ Append one row per POC **before** deploying, so you never reuse a pair.
 | POC | Frontend | Backend | Status |
 | --- | --- | --- | --- |
 | dso | 3301 | 4301 | live |
+| sagar-cement (S!aP ClinkerIQ, replaces cempulse 3355/4355) | 3363 | 4363 | ready |
+| ldc (GridSense · LDC Intelligence, ldc.astrikos.xyz) | 3365 | 4365 | ready |
 | _next_ | 3303 | 4303 | — |
 
 ---

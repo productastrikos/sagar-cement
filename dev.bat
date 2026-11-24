@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0"
 
 echo ============================================
-echo  CemPulse - Dev Mode (hot reload)
+echo  S!aP ClinkerIQ - Dev Mode (hot reload)
 echo  API: http://localhost:4000
 echo  App: http://localhost:3000
 echo ============================================

@@ -1,13 +1,14 @@
 {
-  "name": "cempulse-server",
+  "name": "clinkeriq-server",
   "version": "1.0.0",
-  "description": "CemPulse backend — Express API, JWT auth, in-memory bag filter simulation",
+  "description": "S!aP ClinkerIQ API — Express, JWT, in-memory plant simulation",
   "private": true,
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "echo \"No build step required for the server\""
+    "build": "echo \"No build step required for the server\"",
+    "selftest": "node sim/selftest.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -1,0 +1,216 @@
+/* ════════════════════════════════════════════════════════════════════════
+   S!aP ClinkerIQ — product-only patterns (§18: one additions.css per product).
+   Every colour is a token. Fixed hex appears only in the theme-independent
+   sheet view and the A4 export stage, as §9 allows.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── Small utilities ── */
+.row { display:flex; align-items:center; gap:8px; min-width:0; }
+.row.wrap { flex-wrap:wrap; }
+.row.top { align-items:flex-start; }
+.row.between { justify-content:space-between; }
+.grow { flex:1; min-width:0; }
+.right { text-align:right; }
+.mt-8 { margin-top:8px; } .mt-12 { margin-top:12px; } .mb-8 { margin-bottom:8px; }
+.gap-12 { gap:12px; } .gap-16 { gap:16px; }
+.spin { animation:spin .9s linear infinite; }
+.link-plain { border:0; background:none; padding:0; text-align:left; cursor:pointer; font:inherit; color:inherit; }
+.link-plain:hover { color:var(--app-accent); }
+.split-3 { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr); gap:16px; }
+@media (max-width: 1100px) { .split-3 { grid-template-columns:minmax(0,1fr); } }
+.chart-h { min-height:240px; }
+.section-gap { display:flex; flex-direction:column; gap:16px; }
+
+/* ── Header lockup mark ── */
+.lockup-mark { width:30px; height:34px; object-fit:contain; display:block; flex-shrink:0; }
+@media (max-width: 640px) { .astk-lockup-text, .astk-lockup-rule { display:none; } }
+
+/* ── KPI card extras ── */
+.kpi-unit { font-family:'Lato',sans-serif; font-size:12px; font-weight:700; color:var(--app-text-faint); margin-left:2px; letter-spacing:0; }
+.kpi-rag-dot { width:6px; height:6px; border-radius:999px; flex-shrink:0; background:var(--app-text-faint); }
+.kpi-rag-dot.rag-normal { background:var(--app-success); }
+.kpi-rag-dot.rag-warning { background:var(--app-warning); }
+.kpi-rag-dot.rag-critical { background:var(--app-danger); }
+
+/* ── Advisory extras ── */
+.evidence-list { list-style:none; margin:0 0 8px; padding:0; display:flex; flex-direction:column; gap:5px; }
+.evidence-list li { display:flex; gap:8px; align-items:flex-start; font-size:12.5px; line-height:1.45; color:var(--app-text); }
+.ax-strip-text.link-plain { font-size:13px; }
+
+/* ── Data state chips (connectors) ── */
+.dot { width:8px; height:8px; border-radius:999px; display:inline-block; flex-shrink:0; }
+.dot-online, .dot-normal, .dot-up { background:var(--app-success); box-shadow:0 0 0 3px var(--app-success-bg); }
+.dot-buffering, .dot-backfilling, .dot-warning, .dot-stale, .dot-degraded { background:var(--app-warning); box-shadow:0 0 0 3px var(--app-warning-bg); }
+.dot-offline, .dot-down, .dot-critical { background:var(--app-danger); box-shadow:0 0 0 3px var(--app-danger-bg); }
+.dot-none, .dot-planned { background:var(--app-text-faint); }
+
+/* ── Edge gateway tiles (connectivity) ── */
+.gw-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:12px; }
+.gw-tile { border:1px solid var(--app-border); border-radius:12px; background:var(--app-surface-soft); padding:12px 14px; display:flex; flex-direction:column; gap:8px; text-align:left; font:inherit; color:inherit; cursor:pointer; transition:border-color .15s ease; }
+.gw-tile:hover, .gw-tile.is-selected { border-color:var(--app-accent-border); }
+.gw-tile.is-down { border-color:var(--app-danger-border); background:var(--app-modal-danger-bg); }
+.gw-tile.is-backfilling { border-color:var(--app-warning-border); background:var(--app-modal-warning-bg); }
+.gw-name { font-family:'Lexend Deca',sans-serif; font-weight:700; font-size:13px; }
+.gw-meta { font-size:11px; color:var(--app-text-faint); }
+.buffer-bar { height:6px; border-radius:999px; background:var(--app-surface-raised); overflow:hidden; }
+.buffer-fill { height:100%; border-radius:999px; background:var(--app-warning); transition:width .45s cubic-bezier(0.22,1,0.36,1); }
+
+/* ── Pipeline (connect → collect → historize …) ── */
+.pipe { display:grid; grid-template-columns:repeat(6, minmax(0,1fr)); gap:8px; }
+.pipe-step { position:relative; border:1px solid var(--app-border); border-radius:10px; background:var(--app-surface-soft); padding:10px 12px; }
+.pipe-step:not(:last-child)::after { content:''; position:absolute; right:-8px; top:50%; width:8px; height:1px; background:var(--app-border-strong); }
+.pipe-step .n { font-family:'Lexend Deca',sans-serif; font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--app-accent); }
+.pipe-step .t { font-weight:700; font-size:12.5px; margin-top:2px; }
+.pipe-step .d { font-size:11px; color:var(--app-text-faint); margin-top:4px; line-height:1.4; }
+@media (max-width: 1100px) { .pipe { grid-template-columns:repeat(2, minmax(0,1fr)); } .pipe-step::after { display:none; } }
+
+/* ── Instrument tiles (lab) ── */
+.inst-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:12px; }
+.inst-tile { border:1px solid var(--app-border); border-radius:12px; background:var(--app-surface); padding:12px 14px; display:flex; flex-direction:column; gap:6px; min-width:0; }
+.inst-tile h3 { font-family:'Lexend Deca',sans-serif; font-size:12.5px; margin:0; }
+.inst-params { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:2px 10px; font-size:11px; }
+.inst-params span { color:var(--app-text-faint); }
+.inst-params b { font-variant-numeric:tabular-nums; text-align:right; font-weight:700; color:var(--app-text); }
+
+/* ── Genealogy chain ── */
+.gen-chain { display:grid; grid-template-columns:repeat(6, minmax(0,1fr)); gap:10px; align-items:stretch; }
+.gen-node { position:relative; border:1px solid var(--app-border); border-radius:12px; background:var(--app-surface-soft); padding:10px 12px; display:flex; flex-direction:column; gap:4px; min-width:0; text-align:left; font:inherit; color:inherit; cursor:pointer; }
+.gen-node.is-selected { border-color:var(--app-accent); box-shadow:inset 0 0 0 1px var(--app-accent-border); }
+.gen-node.is-bad { border-color:var(--app-danger-border); }
+.gen-node:not(:last-child)::after { content:'›'; position:absolute; right:-9px; top:50%; transform:translateY(-50%); color:var(--app-text-faint); font-weight:700; }
+.gen-stage { font-family:'Lexend Deca',sans-serif; font-size:9.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--app-text-faint); }
+.gen-id { font-family:'JetBrains Mono',ui-monospace,monospace; font-size:10.5px; color:var(--app-accent); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.gen-kv { font-size:11px; color:var(--app-text-muted); line-height:1.45; }
+.gen-lag { font-size:10.5px; color:var(--app-text-faint); }
+@media (max-width: 1280px) { .gen-chain { grid-template-columns:repeat(3, minmax(0,1fr)); } .gen-node::after { display:none; } }
+@media (max-width: 640px) { .gen-chain { grid-template-columns:minmax(0,1fr); } }
+
+/* ── Field tags & cameras ── */
+.tag-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:12px; }
+.tag-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 10px; padding:6px 0; border-bottom:1px solid var(--app-border-soft); font-size:12px; }
+.tag-row:last-child { border-bottom:0; }
+.tag-row .code { font-family:'JetBrains Mono',ui-monospace,monospace; font-size:10px; color:var(--app-text-faint); }
+.tag-row .v { font-weight:700; font-variant-numeric:tabular-nums; text-align:right; }
+.tag-row .v.is-warning { color:var(--app-warning); }
+.tag-row .rng { font-size:10px; color:var(--app-text-faint); text-align:right; }
+.cam-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:12px; }
+.cam-tile { border:1px solid var(--app-border); border-radius:12px; overflow:hidden; background:var(--app-surface-soft); }
+.cam-view { position:relative; height:118px; background:var(--app-bg); overflow:hidden; }
+.cam-view svg { width:100%; height:100%; display:block; }
+.cam-badge { position:absolute; top:8px; left:8px; display:inline-flex; align-items:center; gap:5px; padding:2px 8px; border-radius:999px; background:var(--app-bg-elevated); border:1px solid var(--app-border-strong); font-size:9.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--app-text-muted); }
+.cam-body { padding:10px 12px; display:flex; flex-direction:column; gap:4px; }
+
+/* ── Single-line diagram (power) ── */
+.sld { width:100%; height:auto; display:block; }
+.sld-label { font-family:'Lato',sans-serif; font-size:10.5px; fill:var(--app-text-muted); }
+.sld-value { font-family:'Lexend Deca',sans-serif; font-size:11.5px; font-weight:700; fill:var(--app-text); }
+.sld-faint { font-family:'Lato',sans-serif; font-size:9.5px; fill:var(--app-text-faint); }
+.sld-line { stroke:var(--app-border-strong); stroke-width:2; fill:none; }
+.sld-bus { stroke:var(--app-text-muted); stroke-width:4; }
+.sld-box { fill:var(--app-surface-soft); stroke:var(--app-border-strong); stroke-width:1; }
+.sld-box.is-warn { stroke:var(--app-warning); }
+.sld-box.is-crit { stroke:var(--app-danger); }
+.sld-box.is-off { stroke-dasharray:4 3; opacity:.6; }
+.sld-flow { stroke:var(--app-accent); stroke-width:2; stroke-dasharray:6 6; animation:sld-flow 1.2s linear infinite; fill:none; }
+@keyframes sld-flow { to { stroke-dashoffset:-12; } }
+
+/* ── ToD slot chips ── */
+.slot { display:inline-flex; align-items:center; padding:1px 7px; border-radius:6px; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.slot-peak { background:var(--app-danger-bg); color:var(--app-danger); }
+.slot-solar, .slot-offpeak { background:var(--app-success-bg); color:var(--app-success); }
+.slot-normal, .slot-night { background:var(--app-surface-raised); color:var(--app-text-muted); }
+
+/* ── Architecture layers (platform) ── */
+.arch { display:flex; flex-direction:column; gap:8px; }
+.arch-row { display:grid; grid-template-columns:150px minmax(0,1fr); gap:12px; align-items:stretch; }
+.arch-tag { border-radius:10px; background:var(--app-accent-bg); border:1px solid var(--app-accent-border); color:var(--app-accent); font-family:'Lexend Deca',sans-serif; font-weight:700; font-size:12px; display:flex; align-items:center; justify-content:center; text-align:center; padding:8px; }
+.arch-row.is-ot .arch-tag { background:var(--app-surface-raised); border-color:var(--app-border-strong); color:var(--app-text-muted); }
+.arch-row.is-dmz .arch-tag { background:var(--app-warning-bg); border-color:var(--app-warning-border); color:var(--app-warning); }
+.arch-items { display:flex; flex-wrap:wrap; gap:6px; border:1px solid var(--app-border); border-radius:10px; padding:8px; background:var(--app-surface-soft); }
+.arch-chip { padding:4px 9px; border-radius:8px; background:var(--app-surface); border:1px solid var(--app-border-soft); font-size:11.5px; }
+@media (max-width: 768px) { .arch-row { grid-template-columns:minmax(0,1fr); } }
+
+/* ── Map markers (Leaflet divIcon) ── */
+.plant-marker { width:18px; height:18px; border-radius:999px; border:3px solid var(--app-bg-elevated); box-shadow:var(--app-shadow-md); }
+.plant-marker.h-normal { background:var(--app-success); }
+.plant-marker.h-warning { background:var(--app-warning); }
+.plant-marker.h-critical { background:var(--app-danger); }
+.plant-marker.is-grinding { border-radius:6px; transform:rotate(45deg); }
+.hq-marker { width:12px; height:12px; border-radius:6px; background:var(--app-accent); border:2px solid var(--app-bg-elevated); }
+.map-panel { height:540px; }
+.map-panel .leaflet-container { width:100%; height:100%; }
+
+/* ── What-if sliders ── */
+.slider-row { display:grid; grid-template-columns:150px minmax(0,1fr) 70px; gap:12px; align-items:center; font-size:12px; }
+.slider-row input[type='range'] { width:100%; }
+.slider-row .v { font-weight:700; text-align:right; font-variant-numeric:tabular-nums; }
+
+/* ── Login extras ── */
+.login-brand { display:flex; align-items:center; gap:14px; }
+.login-brand img { width:64px; height:72px; object-fit:contain; }
+.login-client { font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--app-text-faint); font-weight:700; }
+.login-left { position:relative; overflow:hidden; }
+.login-left > * { position:relative; z-index:1; }
+.login-pillars { list-style:none; margin:8px 0 0; padding:0; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; max-width:560px; }
+.login-pillars li { border:1px solid var(--app-border); border-radius:10px; padding:10px 12px; background:var(--app-surface-soft); font-size:12px; color:var(--app-text-muted); }
+.login-pillars b { display:block; color:var(--app-text); font-family:'Lexend Deca',sans-serif; font-size:12px; margin-bottom:2px; }
+.login-theme { position:absolute; top:16px; right:16px; z-index:3; }
+.login-hero { width:100%; max-width:560px; border-radius:14px; border:1px solid var(--app-border); max-height:200px; object-fit:cover; }
+.cred-btn { border:0; background:none; padding:0; font:inherit; color:var(--app-accent); font-weight:700; cursor:pointer; }
+
+/* ── Document Studio: preview stage, sheets (theme-independent, §9.7) ── */
+.studio-pages { display:flex; flex-direction:column; align-items:center; gap:20px; }
+.studio-page-slot { flex-shrink:0; }
+.studio-export-stage { position:fixed; left:-12000px; top:0; display:flex; flex-direction:column; gap:20px; pointer-events:none; }
+.studio-sheets { display:flex; flex-direction:column; min-height:0; flex:1; }
+.sheet-grid { background:#FFFFFF; border:1px solid #ECEAF3; border-radius:10px 10px 0 0; overflow:auto; max-height:calc(100vh - 210px); }
+.sheet-grid table { border-collapse:collapse; font-family:'Lato',sans-serif; font-size:11.5px; color:#2F2E33; min-width:100%; }
+.sheet-grid th { background:#F3F2F8; color:#7D7A91; font-weight:700; font-size:10px; padding:4px 8px; border:1px solid #ECEAF3; position:sticky; top:0; }
+.sheet-grid td { border:1px solid #ECEAF3; padding:4px 8px; white-space:nowrap; }
+.sheet-grid td.num { text-align:right; font-variant-numeric:tabular-nums; }
+.sheet-grid tr.sheet-ink td { background:#353248; color:#F7F7FA; font-weight:700; }
+.sheet-grid tbody tr:hover td { background:#EEEBFF; }
+.sheet-grid .sheet-rownum, .sheet-grid .sheet-corner { background:#F3F2F8; color:#7D7A91; text-align:center; width:36px; font-size:10px; }
+.sheet-tabs { display:flex; gap:2px; background:#F3F2F8; border:1px solid #ECEAF3; border-top:0; border-radius:0 0 10px 10px; padding:4px; overflow-x:auto; }
+.sheet-tab { border:0; background:transparent; color:#565559; font:inherit; font-size:11px; font-weight:700; padding:5px 10px; border-radius:6px; cursor:pointer; white-space:nowrap; }
+.sheet-tab.on { background:#FFFFFF; color:#353248; box-shadow:inset 0 -2px 0 #8B82C3; }
+.sheet-csv { background:#FFFFFF; color:#2F2E33; border:1px solid #ECEAF3; border-radius:10px; padding:12px; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:11px; overflow:auto; max-height:calc(100vh - 210px); margin:0; }
+
+/* ── Polish from screenshot review ── */
+/* theme.css declares .only-mobile before .icon-btn, so the button's display wins at desktop width. */
+.icon-btn.only-mobile { display:none; }
+@media (max-width: 1024px) { .icon-btn.only-mobile { display:inline-flex; } }
+/* A lone filter field should not stretch across the whole page. */
+.filter-bar > .fb-field:not(.fb-range) { max-width:380px; }
+/* Six-card rows are narrow: labels may take two lines instead of truncating (trend badge is omitted there). */
+.kpi-row.kpi-6 .kpi-label { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; line-height:1.3; min-height:2.6em; }
+.kpi-value { white-space:nowrap; }
+
+/* ── S!a dock — floating launcher, bottom-right (copilot overlay tier, §4.5) ── */
+.sia-dock {
+  position:fixed; right:20px; bottom:20px; z-index:4000; display:inline-flex; align-items:center; gap:12px;
+  padding:8px 18px 8px 8px; border-radius:999px; cursor:pointer; font:inherit; text-align:left;
+  background:var(--app-bg-elevated); color:var(--app-text); border:1px solid var(--app-border-strong);
+  box-shadow:var(--app-shadow-lg), var(--app-edge-light); animation:slide-up .25s cubic-bezier(.22,1,.36,1);
+  transition:transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s ease, border-color .15s ease;
+}
+.sia-dock:hover { transform:translateY(-2px); border-color:var(--app-advisory-border); box-shadow:var(--app-shadow-lg), 0 0 0 4px var(--app-glow); }
+.sia-dock-orb {
+  width:40px; height:40px; border-radius:999px; flex-shrink:0; position:relative;
+  background:radial-gradient(circle at 34% 30%, var(--app-accent-soft) 0%, var(--app-advisory) 26%, var(--app-advisory-deep) 58%, var(--app-bg) 100%);
+  box-shadow:inset 0 -6px 12px var(--app-bg), 0 0 14px var(--app-glow);
+}
+.sia-dock-orb::after { content:''; position:absolute; top:7px; left:10px; width:12px; height:7px; border-radius:999px; background:var(--app-on-accent); opacity:.55; filter:blur(1px); }
+.sia-dock.is-hearing .sia-dock-orb, .sia-dock.is-running .sia-dock-orb { animation:pulse-glow 1.6s ease-in-out infinite; }
+.sia-dock-text { display:flex; flex-direction:column; line-height:1.15; }
+.sia-dock-name { font-family:'Lexend Deca',sans-serif; font-weight:700; font-size:16px; letter-spacing:-.01em; }
+.sia-dock-hint { display:inline-flex; align-items:center; gap:6px; font-size:11.5px; color:var(--app-text-muted); margin-top:3px; white-space:nowrap; }
+.sia-dock-dot { width:7px; height:7px; border-radius:999px; background:var(--app-text-faint); }
+.sia-dock-dot.is-on { background:var(--app-success); box-shadow:0 0 0 3px var(--app-success-bg); }
+/* Step aside while a right drawer, modal or the Document Studio is open, so it never covers their buttons. */
+body:has(.app-drawer) .sia-dock, body:has(.app-studio) .sia-dock, body:has(.app-modal-backdrop) .sia-dock { display:none; }
+@media (max-width: 640px) { .sia-dock { right:12px; bottom:12px; padding-right:14px; } }
+
+/* Login: the Powered-by plate keeps its sidebar margin-top:auto, which pushed the sign-in card to the top. Centre both. */
+.login-right { justify-content:center; min-height:100vh; }
+.login-right .powered-by { margin:0; }

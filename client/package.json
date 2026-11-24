@@ -1,18 +1,26 @@
 {
-  "name": "cempulse-client",
+  "name": "clinkeriq-client",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@astrikos/sia-copilot": "file:vendor/astrikos-sia-copilot-1.0.0-ciq.1.tgz",
+    "@fontsource/lato": "^5.1.0",
+    "@fontsource/lexend-deca": "^5.1.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "chart.js": "^4.4.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.2",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.460.0",
     "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.20.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "recharts": "^2.12.7",
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -39,9 +47,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.16",
-    "tailwindcss": "^3.3.5"
   }
 }

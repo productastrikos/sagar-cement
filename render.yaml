@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: cempulse
+    name: clinkeriq
     runtime: node
     plan: free
     buildCommand: npm install --prefix server && npm install --prefix client && CI=false npm run build --prefix client

@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0"
 
 echo ============================================
-echo  CemPulse - Local Production-Style Test
+echo  S!aP ClinkerIQ - Local Production-Style Test
 echo  (mirrors what Hostinger will run)
 echo ============================================
 echo.
